@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <title>PDF Chat 問答系統</title>
-    <style>
-        body { font-family: "微軟正黑體", sans-serif; margin: 40px; }
-        input[type="text"] { width: 400px; padding: 8px; font-size: 16px; }
-        button { padding: 8px 16px; font-size: 16px; }
-        .answer-box { margin-top: 20px; white-space: pre-wrap; }
-    </style>
+  <meta charset="UTF-8">
+  <title>能資公司 PDF 問答系統</title>
+  <style>
+    body {
+      font-family: "微軟正黑體", sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    input[type="text"] {
+      width: 400px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+    .answer-box {
+      margin-top: 30px;
+      white-space: pre-wrap;
+      text-align: left;
+      display: inline-block;
+      max-width: 600px;
+    }
+  </style>
 </head>
 <body>
-    <h2>能資公司 PDF 問答系統</h2>
-    <iframe src="https://pdfchat-web.onrender.com" width="100%" height="600px" frameborder="0">
-    您的瀏覽器不支援 iframe
-    </iframe>
-    <form action="/ask" method="POST">
-        <input type="text" name="query" placeholder="請輸入問題..." required>
-        <button type="submit">查詢</button>
-    </form>
+  <h2>能資公司 PDF 問答系統</h2>
 
-    {% if question %}
-        <div class="answer-box">
-            <h4>🔎 問題：{{ question }}</h4>
-            <p>{{ answer }}</p>
-        </div>
-    {% endif %}
+  <form action="/ask" method="POST">
+    <input type="text" name="query" placeholder="請輸入問題..." required>
+    <button type="submit">查詢</button>
+  </form>
+
+  {% if question %}
+    <div class="answer-box">
+      <h4>🔎 問題：{{ question }}</h4>
+      <p>{{ answer }}</p>
+    </div>
+  {% endif %}
 </body>
 </html>
