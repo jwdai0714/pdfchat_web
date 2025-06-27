@@ -45,7 +45,7 @@ def answer_question(text, query):
         match = re.search(r"一[、.\s]*公司概況\s*(.+?)二[、.\s]*營業項目", text, re.DOTALL)
         return "✅ 能資公司基本資料：\n" + match.group(1).strip() if match else "❌ 找不到公司概況內容。"
 
-    elif "認證" in query:
+    elif "認證" in query or "證照" in query:
         # 抓取帶有年份 + 認證字樣 的完整句子
         matches = re.findall(r"(20[0-9]{2}年[^\n。]*(?:TFDA|FDA|ISO\s?13485|GMP|QMS)[^\n。]*[。])", text)
         matches = list(dict.fromkeys(matches))  # 去重複
@@ -59,7 +59,7 @@ def answer_question(text, query):
         match = re.search(r"六、應用場景與實證案例(.+?)七、AI智慧醫療", text, re.DOTALL)
         return "✅ 應用場景與環境：\n" + match.group(1).strip() if match else "❌ 找不到應用場景內容。"
 
-    elif "環境" in query or "待遇" in query:
+    elif "環境" in query or ("待遇" in query or "薪資" in query or "薪水" in query):
         return """✅ 能資公司工作環境與待遇資訊（非公開文件資料，以下為推估）：\n• 員工人數少，扁平化組織，溝通效率高\n• 位於新竹生醫園區，工作環境乾淨明亮\n• 以技術研發為主軸，研發人員為核心團隊\n• 依職務不同，月薪約落在35,000~70,000元不等\n• 員工具備跨領域整合能力，研發自由度高\n• 福利方面提供勞健保、特休、專案獎金與彈性工時\n※ 若需進一步精確薪資與職缺資訊，建議查詢 104 職缺或聯繫人資部門。"""
 
     elif "軟體" in query or "AI" in query:
