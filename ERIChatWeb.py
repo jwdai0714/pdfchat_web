@@ -36,8 +36,42 @@ def answer_question(text, query):
         match = re.search(r"一[、.\s]*公司概況\s*(.+?)二[、.\s]*營業項目", text, re.DOTALL)
         return "✅ 能資公司基本資料：\n" + match.group(1).strip() if match else "❌ 找不到公司概況內容。"
 
+    elif "認證" in query:
+        # 抓取帶有年份 + 認證字樣 的完整句子
+        matches = re.findall(r"(20[0-9]{2}年[^\n。]*(?:TFDA|FDA|ISO\s?13485|GMP|QMS)[^\n。]*[。])", text)
+        matches = list(dict.fromkeys(matches))  # 去重複
+        return "✅ 認證紀錄：\n" + "\n".join(matches) if matches else "❌ 無法找到認證紀錄。"
+
+    elif "產品" in query and ("特色" in query or "規格" in query):
+        match = re.search(r"五、產品規格與特徵(.+?)六、應用場景", text, re.DOTALL)
+        return "✅ 產品規格與特徵：\n" + match.group(1).strip() if match else "❌ 找不到產品規格與特徵。"
+
+    elif "應用" in query and ("場景" in query or "環境" in query):
+        match = re.search(r"六、應用場景與實證案例(.+?)七、AI智慧醫療", text, re.DOTALL)
+        return "✅ 應用場景與環境：\n" + match.group(1).strip() if match else "❌ 找不到應用場景內容。"
+
+    elif "環境" in query or "待遇" in query:
+        return """✅ 能資公司工作環境與待遇資訊（非公開文件資料，以下為推估）：\n• 員工人數少，扁平化組織，溝通效率高\n• 位於新竹生醫園區，工作環境乾淨明亮\n• 以技術研發為主軸，研發人員為核心團隊\n• 依職務不同，月薪約落在35,000~70,000元不等\n• 員工具備跨領域整合能力，研發自由度高\n• 福利方面提供勞健保、特休、專案獎金與彈性工時\n※ 若需進一步精確薪資與職缺資訊，建議查詢 104 職缺或聯繫人資部門。"""
+
+    elif "軟體" in query or "AI" in query:
+        match = re.search(r"七、AI智慧醫療整合系統(.+?)八、技術貢獻", text, re.DOTALL)
+        return "✅ 軟體系統：\n" + match.group(1).strip() if match else "❌ 無法找到軟體資訊。"
+
+    elif "技術貢獻" in query or "產業貢獻" in query:
+        match = re.search(r"八[、.\s]*技術貢獻與產業價值\s*([\s\S]*)", text)
+        return "✅ 能資公司技術貢獻與產業價值：\n" + match.group(1).strip() if match else "❌ 無法找到技術貢獻內容。"
+
+    elif "技術" in query or "核心技術" in query or "技術亮點" in query:
+        match = re.search(r"四、核心技術亮點\s*(.*?)五、產品規格與特徵", text, re.S)
+        return "✅ 能資公司核心技術亮點：\n" + match.group(1).strip() if match else "❌ 無法找到核心技術亮點內容。"
+
+    elif "產品" in query:
+        match = re.search(r"五、產品規格與特徵(.+?)六、應用場景", text, re.DOTALL)
+        return "✅ 產品規格與特徵：\n" + match.group(1).strip() if match else "❌ 找不到產品規格與特徵。"
+
     else:
         return "❓ 此問題無法處理，請明確描述問題內容。"
+
 
 # 首頁
 @app.route("/", methods=["GET"])
